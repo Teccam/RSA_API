@@ -2,8 +2,8 @@
 cf=227360000
 refLevel=-40
 bw=20.0e6
-durationMsec = 60000
-fileDir='C:/SignalVu-PC Files'
+durationMsec = 10000
+fileDir='D:/RFRecordings'
 projectName = 'TestRecording'
 reference = 'internal' # default = internal
 
@@ -33,8 +33,8 @@ rsa = cdll.LoadLibrary("RSA_API.dll")
 ## prepare recording folder and fileName
 now = datetime.now()
 print("now =", now)
-dt_string = now.strftime("%d%m%Y_%H%M%S")
-path = fileDir + '/' + dt_string
+dt_string = now.strftime("%Y%m%d_%H%M%S")
+path = fileDir + '/' + dt_string + '_' + str(cf) + '_Hz'
 try:
     os.mkdir(path)
 except OSError:
