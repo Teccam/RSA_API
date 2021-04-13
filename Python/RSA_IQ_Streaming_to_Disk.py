@@ -1,9 +1,9 @@
 # Settings ####################################################
 cf=227360000
-refLevel=-40
-bw=20.0e6
-durationMsec = 10000
-fileDir='D:/RFRecordings'
+refLevel=-20
+bw=40.0e6
+durationMsec = 1800000
+fileDir='C:/RFRecordings'
 projectName = 'TestRecording'
 reference = 'internal' # default = internal
 
@@ -100,11 +100,17 @@ def config_iq_stream(cf=cf, refLevel=refLevel, bw=bw, fileDir=fileDir,
                      durationMsec=1000,reference=reference):
     filenameBase = fileDir + '\\' + fileName
     bwActual = c_double(0)
+    bufferSizeActual = c_int(0)
     sampleRate = c_double(0)
     rsa.CONFIG_SetCenterFreq(c_double(cf))
     rsa.CONFIG_SetReferenceLevel(c_double(refLevel))
     if reference == 'external':
         rsa.CONFIG_SetExternalRefEnable()
+        
+    # increase buffer size for highest data rate
+    rsa.IQSTREAM_SetIQDataBufferSize(8*65536)
+    rsa.IQSTREAM_GetIQDataBufferSize(byref(bufferSizeActual))
+    print('BufferSize',bufferSizeActual)
 
     rsa.IQSTREAM_SetAcqBandwidth(c_double(bw))
     rsa.IQSTREAM_SetOutputConfiguration(dest, dType)
